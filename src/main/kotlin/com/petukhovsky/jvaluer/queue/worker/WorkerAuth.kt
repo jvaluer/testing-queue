@@ -11,12 +11,6 @@ import java.security.MessageDigest
  * Created by Arthur Petukhovsky on 3/22/2017.
  */
 
-data class WorkerAuthResponse(
-        val status: QueryStatus,
-        val error: QueryError?,
-        val auth: WorkerAuth?
-)
-
 data class WorkerAuth(
         val token: String
 )

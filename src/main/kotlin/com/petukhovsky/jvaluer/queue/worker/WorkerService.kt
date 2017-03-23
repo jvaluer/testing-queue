@@ -6,6 +6,7 @@ import com.petukhovsky.jvaluer.queue.tools.generateToken
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed
+import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Service
 import java.util.concurrent.ConcurrentHashMap
@@ -29,22 +30,14 @@ class WorkerService @Autowired constructor(
         val info = repo.findOneByKey(key)
                 ?: return WorkerAuthResponse(
                             QueryStatus.FAIL,
-                            QueryError(
-                                    "Key is not found",
-                                    1,
-                                    null
-                            ),
+                            QueryError("Key is not found", 1, null),
                             null
-        )
+                )
 
         if (!verifier.verify(rand, sig, info.secret)) {
             return WorkerAuthResponse(
                     QueryStatus.FAIL,
-                    QueryError(
-                            "Incorrect signature",
-                            2,
-                            null
-                    ),
+                    QueryError("Incorrect signature", 2, null),
                     null
             )
         }
@@ -60,16 +53,29 @@ class WorkerService @Autowired constructor(
                 WorkerAuth(token)
         )
     }
+
+    fun createWorker(name: String): WorkerInfo {
+        return repo.save(
+                WorkerInfo(
+                        null,
+                        generateToken(15),
+                        generateToken(35),
+                        name,
+                        null
+                )
+        )
+    }
 }
 
-abstract class WorkerRepository: MongoRepository<WorkerInfo, String> {
-    abstract fun findOneByKey(key: String): WorkerInfo?
+interface WorkerRepository: MongoRepository<WorkerInfo, String> {
+    fun findOneByKey(key: String): WorkerInfo?
 }
 
+@Document
 data class WorkerInfo(
         @Id var id: String? = null,
-        @Indexed(unique = true) var key: String,
-        var secret: String,
-        var name: String,
-        @Indexed(unique = true) var acceptableToken: String?
+        @Indexed(unique = true) var key: String = "",
+        var secret: String = "",
+        var name: String = "",
+        @Indexed(unique = true) var acceptableToken: String? = null
 )

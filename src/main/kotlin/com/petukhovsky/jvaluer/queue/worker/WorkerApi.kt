@@ -1,5 +1,7 @@
 package com.petukhovsky.jvaluer.queue.worker
 
+import com.petukhovsky.jvaluer.queue.tools.QueryError
+import com.petukhovsky.jvaluer.queue.tools.QueryStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed
@@ -13,12 +15,18 @@ import org.springframework.web.bind.annotation.RestController
 * Created by Arthur Petukhovsky on 3/22/2017.
 */
 
-@RestController("/worker")
+@RestController
 class WorkerApi @Autowired constructor(
         val service: WorkerService
 ) {
-    @RequestMapping("/auth")
+    @RequestMapping("/worker/auth")
     fun auth(key: String, rand: String, sig: String): WorkerAuthResponse {
         return service.auth(key, rand, sig)
     }
 }
+
+data class WorkerAuthResponse(
+        val status: QueryStatus,
+        val error: QueryError?,
+        val auth: WorkerAuth?
+)

@@ -35,7 +35,13 @@ repositories {
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-data-mongodb")
 	compile('org.springframework.boot:spring-boot-starter-web')
+
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-kotlin
+	compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.9.0.pr1'
+
+
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
 	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
