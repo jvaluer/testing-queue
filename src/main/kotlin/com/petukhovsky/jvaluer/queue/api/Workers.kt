@@ -15,21 +15,22 @@ import org.springframework.web.bind.annotation.RestController
  * Created by Arthur Petukhovsky on 3/23/2017.
  */
 @RestController
+@RequestMapping("/workers")
 class Workers @Autowired constructor(
         val service: WorkerService,
         val repo: WorkerRepository
 ) {
-    @RequestMapping("/workers/all")
+    @RequestMapping("/all")
     fun all(): List<WorkerInfo> {
         return repo.findAll()!!
     }
 
-    @RequestMapping("/workers/add")
+    @RequestMapping("/add")
     fun add(@RequestParam("name") name: String): WorkerInfo {
         return service.createWorker(name)
     }
 
-    @RequestMapping("/workers/remove")
+    @RequestMapping("/remove")
     fun remove(@RequestParam("id") id: String): RemoveResponse {
         if (!repo.exists(id)) {
             return RemoveResponse(

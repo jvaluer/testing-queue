@@ -1,5 +1,6 @@
 package com.petukhovsky.jvaluer.queue.tools
 
+import java.security.SecureRandom
 import java.util.*
 
 /**
@@ -9,7 +10,7 @@ import java.util.*
 fun generateToken(
         length: Int = 25,
         dict: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9'),
-        random: Random = Random()
+        random: Random = SecureRandom()
 ): String {
     val sb = StringBuilder()
     for (i in 1..length) sb.append(dict.random(random))

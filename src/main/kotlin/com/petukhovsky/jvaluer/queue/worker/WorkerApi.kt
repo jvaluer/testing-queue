@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RestController
 */
 
 @RestController
+@RequestMapping("/worker")
 class WorkerApi @Autowired constructor(
         val service: WorkerService
 ) {
-    @RequestMapping("/worker/auth")
+    @RequestMapping("/auth")
     fun auth(key: String, rand: String, sig: String): WorkerAuthResponse {
         return service.auth(key, rand, sig)
     }

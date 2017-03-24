@@ -1,5 +1,6 @@
 package com.petukhovsky.jvaluer.queue.worker
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.petukhovsky.jvaluer.queue.tools.QueryError
 import com.petukhovsky.jvaluer.queue.tools.QueryStatus
 import com.petukhovsky.jvaluer.queue.tools.generateToken
@@ -72,10 +73,11 @@ interface WorkerRepository: MongoRepository<WorkerInfo, String> {
 }
 
 @Document
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class WorkerInfo(
         @Id var id: String? = null,
         @Indexed(unique = true) var key: String = "",
         var secret: String = "",
         var name: String = "",
-        @Indexed(unique = true) var acceptableToken: String? = null
+        @Indexed(unique = true, sparse = true) var acceptableToken: String? = null
 )
